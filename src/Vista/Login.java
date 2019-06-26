@@ -30,8 +30,7 @@ public class Login extends javax.swing.JFrame {
         usuarioSistemaJpa = new UsuariosistemaJpaController(emf);
         this.setLocationRelativeTo(null);
 
-        String usuario = usuarioSistemaJpa.findUsuariosistema("1").getNombreUsuario();
-        JOptionPane.showMessageDialog(null, usuario);
+      
 
     }
 
@@ -56,7 +55,7 @@ public class Login extends javax.swing.JFrame {
         });
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel3.setText("Centro Médico");
+        jLabel3.setText("Miscelanea");
 
         jLabel5.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
         jLabel5.setText("Login Usuarios");
@@ -120,7 +119,7 @@ public class Login extends javax.swing.JFrame {
                         .addGap(136, 136, 136)
                         .addComponent(jLabel5))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(152, 152, 152)
+                        .addGap(170, 170, 170)
                         .addComponent(jLabel3)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -162,9 +161,10 @@ public class Login extends javax.swing.JFrame {
         try {
 
             String cod = usuario1.getText();
+            long codigo = Long.parseLong(cod);
             String pass = contraseña1.getText();
 
-            Usuariosistema u1 = usuarioSistemaJpa.findUsuariosistema(cod);
+            Usuariosistema u1 = usuarioSistemaJpa.findUsuariosistema(codigo);
             if (u1.getContraseña().equalsIgnoreCase(pass)) {
                 VentanPrincipal vp = new VentanPrincipal(emf, u1);
 

@@ -38,12 +38,15 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Articulos.findByIdArticulo", query = "SELECT a FROM Articulos a WHERE a.idArticulo = :idArticulo")
     , @NamedQuery(name = "Articulos.findByNombreArticulo", query = "SELECT a FROM Articulos a WHERE a.nombreArticulo = :nombreArticulo")
     , @NamedQuery(name = "Articulos.findByDescripcionArticulo", query = "SELECT a FROM Articulos a WHERE a.descripcionArticulo = :descripcionArticulo")
-    , @NamedQuery(name = "Articulos.findByPrecioArticulo", query = "SELECT a FROM Articulos a WHERE a.precioArticulo = :precioArticulo")
+    , @NamedQuery(name = "Articulos.findByValorCompra", query = "SELECT a FROM Articulos a WHERE a.valorCompra = :valorCompra")
+    , @NamedQuery(name = "Articulos.findByValorVenta", query = "SELECT a FROM Articulos a WHERE a.valorVenta = :valorVenta")
     , @NamedQuery(name = "Articulos.findByStockArticulo", query = "SELECT a FROM Articulos a WHERE a.stockArticulo = :stockArticulo")
+    , @NamedQuery(name = "Articulos.findByPorcentajeGanacia", query = "SELECT a FROM Articulos a WHERE a.porcentajeGanacia = :porcentajeGanacia")
     , @NamedQuery(name = "Articulos.findByCodigoBarras", query = "SELECT a FROM Articulos a WHERE a.codigoBarras = :codigoBarras")
     , @NamedQuery(name = "Articulos.findByCreatedAt", query = "SELECT a FROM Articulos a WHERE a.createdAt = :createdAt")
     , @NamedQuery(name = "Articulos.findByUpdatedAt", query = "SELECT a FROM Articulos a WHERE a.updatedAt = :updatedAt")
-    , @NamedQuery(name = "Articulos.findByDeletedAt", query = "SELECT a FROM Articulos a WHERE a.deletedAt = :deletedAt")})
+    , @NamedQuery(name = "Articulos.findByDeletedAt", query = "SELECT a FROM Articulos a WHERE a.deletedAt = :deletedAt")
+    , @NamedQuery(name = "Articulos.findByEstado", query = "SELECT a FROM Articulos a WHERE a.estado = :estado")})
 public class Articulos implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -51,15 +54,21 @@ public class Articulos implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "idArticulo")
-    private Integer idArticulo;
+    private Long idArticulo;
     @Column(name = "nombreArticulo")
     private String nombreArticulo;
     @Column(name = "descripcionArticulo")
     private String descripcionArticulo;
-    @Column(name = "precioArticulo")
-    private Integer precioArticulo;
+    @Basic(optional = false)
+    @Column(name = "valorCompra")
+    private int valorCompra;
+    @Basic(optional = false)
+    @Column(name = "valorVenta")
+    private int valorVenta;
     @Column(name = "stockArticulo")
     private Integer stockArticulo;
+    @Column(name = "porcentajeGanacia")
+    private Integer porcentajeGanacia;
     @Column(name = "codigoBarras")
     private String codigoBarras;
     @Column(name = "created_at")
@@ -71,6 +80,8 @@ public class Articulos implements Serializable {
     @Column(name = "deleted_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date deletedAt;
+    @Column(name = "estado")
+    private String estado;
     @JoinColumn(name = "idProducto", referencedColumnName = "idProducto")
     @ManyToOne(optional = false)
     private Productos idProducto;
@@ -82,15 +93,21 @@ public class Articulos implements Serializable {
     public Articulos() {
     }
 
-    public Articulos(Integer idArticulo) {
+    public Articulos(Long idArticulo) {
         this.idArticulo = idArticulo;
     }
 
-    public Integer getIdArticulo() {
+    public Articulos(Long idArticulo, int valorCompra, int valorVenta) {
+        this.idArticulo = idArticulo;
+        this.valorCompra = valorCompra;
+        this.valorVenta = valorVenta;
+    }
+
+    public Long getIdArticulo() {
         return idArticulo;
     }
 
-    public void setIdArticulo(Integer idArticulo) {
+    public void setIdArticulo(Long idArticulo) {
         this.idArticulo = idArticulo;
     }
 
@@ -110,12 +127,20 @@ public class Articulos implements Serializable {
         this.descripcionArticulo = descripcionArticulo;
     }
 
-    public Integer getPrecioArticulo() {
-        return precioArticulo;
+    public int getValorCompra() {
+        return valorCompra;
     }
 
-    public void setPrecioArticulo(Integer precioArticulo) {
-        this.precioArticulo = precioArticulo;
+    public void setValorCompra(int valorCompra) {
+        this.valorCompra = valorCompra;
+    }
+
+    public int getValorVenta() {
+        return valorVenta;
+    }
+
+    public void setValorVenta(int valorVenta) {
+        this.valorVenta = valorVenta;
     }
 
     public Integer getStockArticulo() {
@@ -124,6 +149,14 @@ public class Articulos implements Serializable {
 
     public void setStockArticulo(Integer stockArticulo) {
         this.stockArticulo = stockArticulo;
+    }
+
+    public Integer getPorcentajeGanacia() {
+        return porcentajeGanacia;
+    }
+
+    public void setPorcentajeGanacia(Integer porcentajeGanacia) {
+        this.porcentajeGanacia = porcentajeGanacia;
     }
 
     public String getCodigoBarras() {
@@ -156,6 +189,14 @@ public class Articulos implements Serializable {
 
     public void setDeletedAt(Date deletedAt) {
         this.deletedAt = deletedAt;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     public Productos getIdProducto() {

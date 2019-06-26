@@ -110,7 +110,7 @@ public class ComprasJpaController implements Serializable {
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Integer id = compras.getIdCompra();
+                Long id = compras.getIdCompra();
                 if (findCompras(id) == null) {
                     throw new NonexistentEntityException("The compras with id " + id + " no longer exists.");
                 }
@@ -123,7 +123,7 @@ public class ComprasJpaController implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException {
+    public void destroy(Long id) throws IllegalOrphanException, NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -179,7 +179,7 @@ public class ComprasJpaController implements Serializable {
         }
     }
 
-    public Compras findCompras(Integer id) {
+    public Compras findCompras(Long id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Compras.class, id);

@@ -7,7 +7,6 @@ package Controlador;
 
 import Controlador.exceptions.IllegalOrphanException;
 import Controlador.exceptions.NonexistentEntityException;
-import Controlador.exceptions.PreexistingEntityException;
 import Modelo.Roles;
 import java.io.Serializable;
 import javax.persistence.Query;
@@ -36,7 +35,7 @@ public class RolesJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Roles roles) throws PreexistingEntityException, Exception {
+    public void create(Roles roles) {
         if (roles.getUsuariosistemaCollection() == null) {
             roles.setUsuariosistemaCollection(new ArrayList<Usuariosistema>());
         }
@@ -61,11 +60,6 @@ public class RolesJpaController implements Serializable {
                 }
             }
             em.getTransaction().commit();
-        } catch (Exception ex) {
-            if (findRoles(roles.getIdRol()) != null) {
-                throw new PreexistingEntityException("Roles " + roles + " already exists.", ex);
-            }
-            throw ex;
         } finally {
             if (em != null) {
                 em.close();
@@ -116,7 +110,7 @@ public class RolesJpaController implements Serializable {
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Integer id = roles.getIdRol();
+                Long id = roles.getIdRol();
                 if (findRoles(id) == null) {
                     throw new NonexistentEntityException("The roles with id " + id + " no longer exists.");
                 }
@@ -129,7 +123,7 @@ public class RolesJpaController implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException {
+    public void destroy(Long id) throws IllegalOrphanException, NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -185,7 +179,7 @@ public class RolesJpaController implements Serializable {
         }
     }
 
-    public Roles findRoles(Integer id) {
+    public Roles findRoles(Long id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Roles.class, id);

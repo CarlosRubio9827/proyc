@@ -6,7 +6,6 @@
 package Controlador;
 
 import Controlador.exceptions.NonexistentEntityException;
-import Controlador.exceptions.PreexistingEntityException;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
@@ -33,7 +32,7 @@ public class UsuariosistemaJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Usuariosistema usuariosistema) throws PreexistingEntityException, Exception {
+    public void create(Usuariosistema usuariosistema) {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -49,11 +48,6 @@ public class UsuariosistemaJpaController implements Serializable {
                 idRol = em.merge(idRol);
             }
             em.getTransaction().commit();
-        } catch (Exception ex) {
-            if (findUsuariosistema(usuariosistema.getIdUsuarioSistema()) != null) {
-                throw new PreexistingEntityException("Usuariosistema " + usuariosistema + " already exists.", ex);
-            }
-            throw ex;
         } finally {
             if (em != null) {
                 em.close();
@@ -86,7 +80,7 @@ public class UsuariosistemaJpaController implements Serializable {
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                String id = usuariosistema.getIdUsuarioSistema();
+                Long id = usuariosistema.getIdUsuarioSistema();
                 if (findUsuariosistema(id) == null) {
                     throw new NonexistentEntityException("The usuariosistema with id " + id + " no longer exists.");
                 }
@@ -99,7 +93,7 @@ public class UsuariosistemaJpaController implements Serializable {
         }
     }
 
-    public void destroy(String id) throws NonexistentEntityException {
+    public void destroy(Long id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -149,7 +143,7 @@ public class UsuariosistemaJpaController implements Serializable {
         }
     }
 
-    public Usuariosistema findUsuariosistema(String id) {
+    public Usuariosistema findUsuariosistema(Long id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Usuariosistema.class, id);

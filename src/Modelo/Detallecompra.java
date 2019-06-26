@@ -32,6 +32,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Detallecompra.findAll", query = "SELECT d FROM Detallecompra d")
     , @NamedQuery(name = "Detallecompra.findByIdDetalleCompra", query = "SELECT d FROM Detallecompra d WHERE d.idDetalleCompra = :idDetalleCompra")
+    , @NamedQuery(name = "Detallecompra.findByCantidad", query = "SELECT d FROM Detallecompra d WHERE d.cantidad = :cantidad")
+    , @NamedQuery(name = "Detallecompra.findByValorUnitario", query = "SELECT d FROM Detallecompra d WHERE d.valorUnitario = :valorUnitario")
+    , @NamedQuery(name = "Detallecompra.findByValorTotal", query = "SELECT d FROM Detallecompra d WHERE d.valorTotal = :valorTotal")
     , @NamedQuery(name = "Detallecompra.findByCreatedAt", query = "SELECT d FROM Detallecompra d WHERE d.createdAt = :createdAt")
     , @NamedQuery(name = "Detallecompra.findByUpdatedAt", query = "SELECT d FROM Detallecompra d WHERE d.updatedAt = :updatedAt")
     , @NamedQuery(name = "Detallecompra.findByDeletedAt", query = "SELECT d FROM Detallecompra d WHERE d.deletedAt = :deletedAt")})
@@ -42,7 +45,16 @@ public class Detallecompra implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "idDetalleCompra")
-    private Integer idDetalleCompra;
+    private Long idDetalleCompra;
+    @Basic(optional = false)
+    @Column(name = "cantidad")
+    private int cantidad;
+    @Basic(optional = false)
+    @Column(name = "valorUnitario")
+    private int valorUnitario;
+    @Basic(optional = false)
+    @Column(name = "valorTotal")
+    private int valorTotal;
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
@@ -62,16 +74,47 @@ public class Detallecompra implements Serializable {
     public Detallecompra() {
     }
 
-    public Detallecompra(Integer idDetalleCompra) {
+    public Detallecompra(Long idDetalleCompra) {
         this.idDetalleCompra = idDetalleCompra;
     }
 
-    public Integer getIdDetalleCompra() {
+    public Detallecompra(Long idDetalleCompra, int cantidad, int valorUnitario, int valorTotal) {
+        this.idDetalleCompra = idDetalleCompra;
+        this.cantidad = cantidad;
+        this.valorUnitario = valorUnitario;
+        this.valorTotal = valorTotal;
+    }
+
+    public Long getIdDetalleCompra() {
         return idDetalleCompra;
     }
 
-    public void setIdDetalleCompra(Integer idDetalleCompra) {
+    public void setIdDetalleCompra(Long idDetalleCompra) {
         this.idDetalleCompra = idDetalleCompra;
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public int getValorUnitario() {
+        return valorUnitario;
+    }
+
+    public void setValorUnitario(int valorUnitario) {
+        this.valorUnitario = valorUnitario;
+    }
+
+    public int getValorTotal() {
+        return valorTotal;
+    }
+
+    public void setValorTotal(int valorTotal) {
+        this.valorTotal = valorTotal;
     }
 
     public Date getCreatedAt() {

@@ -11,6 +11,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -35,9 +37,10 @@ public class Roles implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "idRol")
-    private Integer idRol;
+    private Long idRol;
     @Basic(optional = false)
     @Column(name = "nombreRol")
     private String nombreRol;
@@ -49,20 +52,20 @@ public class Roles implements Serializable {
     public Roles() {
     }
 
-    public Roles(Integer idRol) {
+    public Roles(Long idRol) {
         this.idRol = idRol;
     }
 
-    public Roles(Integer idRol, String nombreRol) {
+    public Roles(Long idRol, String nombreRol) {
         this.idRol = idRol;
         this.nombreRol = nombreRol;
     }
 
-    public Integer getIdRol() {
+    public Long getIdRol() {
         return idRol;
     }
 
-    public void setIdRol(Integer idRol) {
+    public void setIdRol(Long idRol) {
         this.idRol = idRol;
     }
 

@@ -47,10 +47,11 @@ public class Ventas implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "idVentas")
-    private Integer idVentas;
+    private Long idVentas;
     @Basic(optional = false)
     @Column(name = "fechaVenta")
-    private String fechaVenta;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaVenta;
     @Basic(optional = false)
     @Column(name = "valorTotalVenta")
     private int valorTotalVenta;
@@ -72,30 +73,30 @@ public class Ventas implements Serializable {
     public Ventas() {
     }
 
-    public Ventas(Integer idVentas) {
+    public Ventas(Long idVentas) {
         this.idVentas = idVentas;
     }
 
-    public Ventas(Integer idVentas, String fechaVenta, int valorTotalVenta, String estadoVenta) {
+    public Ventas(Long idVentas, Date fechaVenta, int valorTotalVenta, String estadoVenta) {
         this.idVentas = idVentas;
         this.fechaVenta = fechaVenta;
         this.valorTotalVenta = valorTotalVenta;
         this.estadoVenta = estadoVenta;
     }
 
-    public Integer getIdVentas() {
+    public Long getIdVentas() {
         return idVentas;
     }
 
-    public void setIdVentas(Integer idVentas) {
+    public void setIdVentas(Long idVentas) {
         this.idVentas = idVentas;
     }
 
-    public String getFechaVenta() {
+    public Date getFechaVenta() {
         return fechaVenta;
     }
 
-    public void setFechaVenta(String fechaVenta) {
+    public void setFechaVenta(Date fechaVenta) {
         this.fechaVenta = fechaVenta;
     }
 

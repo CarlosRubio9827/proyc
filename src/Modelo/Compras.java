@@ -37,7 +37,8 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Compras.findByFechaCompra", query = "SELECT c FROM Compras c WHERE c.fechaCompra = :fechaCompra")
     , @NamedQuery(name = "Compras.findByCreatedAt", query = "SELECT c FROM Compras c WHERE c.createdAt = :createdAt")
     , @NamedQuery(name = "Compras.findByUpdatedAt", query = "SELECT c FROM Compras c WHERE c.updatedAt = :updatedAt")
-    , @NamedQuery(name = "Compras.findByDeletedAt", query = "SELECT c FROM Compras c WHERE c.deletedAt = :deletedAt")})
+    , @NamedQuery(name = "Compras.findByDeletedAt", query = "SELECT c FROM Compras c WHERE c.deletedAt = :deletedAt")
+    , @NamedQuery(name = "Compras.findByValorTotalCompra", query = "SELECT c FROM Compras c WHERE c.valorTotalCompra = :valorTotalCompra")})
 public class Compras implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -45,10 +46,10 @@ public class Compras implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "idCompra")
-    private Integer idCompra;
+    private Long idCompra;
     @Basic(optional = false)
     @Column(name = "fechaCompra")
-    @Temporal(TemporalType.TIME)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCompra;
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
@@ -59,26 +60,28 @@ public class Compras implements Serializable {
     @Column(name = "deleted_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date deletedAt;
+    @Column(name = "valorTotalCompra")
+    private Integer valorTotalCompra;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCompra")
     private Collection<Detallecompra> detallecompraCollection;
 
     public Compras() {
     }
 
-    public Compras(Integer idCompra) {
+    public Compras(Long idCompra) {
         this.idCompra = idCompra;
     }
 
-    public Compras(Integer idCompra, Date fechaCompra) {
+    public Compras(Long idCompra, Date fechaCompra) {
         this.idCompra = idCompra;
         this.fechaCompra = fechaCompra;
     }
 
-    public Integer getIdCompra() {
+    public Long getIdCompra() {
         return idCompra;
     }
 
-    public void setIdCompra(Integer idCompra) {
+    public void setIdCompra(Long idCompra) {
         this.idCompra = idCompra;
     }
 
@@ -112,6 +115,14 @@ public class Compras implements Serializable {
 
     public void setDeletedAt(Date deletedAt) {
         this.deletedAt = deletedAt;
+    }
+
+    public Integer getValorTotalCompra() {
+        return valorTotalCompra;
+    }
+
+    public void setValorTotalCompra(Integer valorTotalCompra) {
+        this.valorTotalCompra = valorTotalCompra;
     }
 
     @XmlTransient

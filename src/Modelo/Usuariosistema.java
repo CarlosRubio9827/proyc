@@ -9,6 +9,8 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -33,9 +35,10 @@ public class Usuariosistema implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "idUsuarioSistema")
-    private String idUsuarioSistema;
+    private Long idUsuarioSistema;
     @Basic(optional = false)
     @Column(name = "nombreUsuario")
     private String nombreUsuario;
@@ -49,21 +52,21 @@ public class Usuariosistema implements Serializable {
     public Usuariosistema() {
     }
 
-    public Usuariosistema(String idUsuarioSistema) {
+    public Usuariosistema(Long idUsuarioSistema) {
         this.idUsuarioSistema = idUsuarioSistema;
     }
 
-    public Usuariosistema(String idUsuarioSistema, String nombreUsuario, String contraseña) {
+    public Usuariosistema(Long idUsuarioSistema, String nombreUsuario, String contraseña) {
         this.idUsuarioSistema = idUsuarioSistema;
         this.nombreUsuario = nombreUsuario;
         this.contraseña = contraseña;
     }
 
-    public String getIdUsuarioSistema() {
+    public Long getIdUsuarioSistema() {
         return idUsuarioSistema;
     }
 
-    public void setIdUsuarioSistema(String idUsuarioSistema) {
+    public void setIdUsuarioSistema(Long idUsuarioSistema) {
         this.idUsuarioSistema = idUsuarioSistema;
     }
 

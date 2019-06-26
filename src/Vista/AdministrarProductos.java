@@ -6,9 +6,14 @@
 package Vista;
 
 import Controlador.ProductosJpaController;
+import Controlador.exceptions.NonexistentEntityException;
 import Modelo.Productos;
 import Modelo.Render;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
@@ -81,11 +86,20 @@ public class AdministrarProductos extends javax.swing.JInternalFrame {
             jTableProductos.setRowHeight(30);
             jButtonEditar.setName("editar");
             jbuttonEliminar.setName("eliminar");
+            List<Productos> listaFinal = new ArrayList<>();
+            Productos p;
             for (int i = 0; i < listaProductos.size(); i++) {
+                if (listaProductos.get(i).getEstado().equalsIgnoreCase("A")) {
+                    p = listaProductos.get(i);
+                    listaFinal.add(p);
+                }
+            }
+
+            for (int i = 0; i < listaFinal.size(); i++) {
                 modelo.addRow(o);
-                modelo.setValueAt(listaProductos.get(i).getIdProducto(), i, 0);
-                modelo.setValueAt(listaProductos.get(i).getNombreProducto(), i, 1);
-                modelo.setValueAt(listaProductos.get(i).getDescripcionProducto(), i, 2);
+                modelo.setValueAt(listaFinal.get(i).getIdProducto(), i, 0);
+                modelo.setValueAt(listaFinal.get(i).getNombreProducto(), i, 1);
+                modelo.setValueAt(listaFinal.get(i).getDescripcionProducto(), i, 2);
                 modelo.setValueAt(jButtonEditar, i, 3);
                 modelo.setValueAt(jbuttonEliminar, i, 4);
             }
@@ -110,6 +124,7 @@ public class AdministrarProductos extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableProductos = new javax.swing.JTable();
         jButtonAñadirProducto = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -135,23 +150,34 @@ public class AdministrarProductos extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel1.setText("Productos");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(221, 221, 221)
-                .addComponent(jButtonAñadirProducto)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 550, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 550, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(221, 221, 221)
+                                .addComponent(jButtonAñadirProducto))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(246, 246, 246)
+                                .addComponent(jLabel1)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(26, 26, 26)
+                .addGap(5, 5, 5)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
                 .addComponent(jButtonAñadirProducto)
@@ -177,6 +203,10 @@ public class AdministrarProductos extends javax.swing.JInternalFrame {
 
     private void jTableProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableProductosMouseClicked
 
+        DefaultTableModel tm = (DefaultTableModel) jTableProductos.getModel();
+        String dato = String.valueOf(tm.getValueAt(jTableProductos.getSelectedRow(), 0));
+        Productos p = productoJpa.findProductos(Long.parseLong(dato));
+
         int column = jTableProductos.getColumnModel().getColumnIndexAtX(evt.getX());
         int row = evt.getY() / jTableProductos.getRowHeight();
 
@@ -186,15 +216,39 @@ public class AdministrarProductos extends javax.swing.JInternalFrame {
                 ((JButton) value).doClick();
                 JButton boton = (JButton) value;
                 if (boton.getName().equalsIgnoreCase("editar")) {
-                    JOptionPane.showMessageDialog(null, "Editar");
-                }else{
-                    JOptionPane.showMessageDialog(null, "Eliminar");
+
+                    EditarProducto a1 = new EditarProducto(emf, jdesktop, p);
+                    a1.setVisible(true);
+                    a1.setIconifiable(true);
+                    a1.setMaximizable(true);
+                    a1.setClosable(true);
+                    a1.setResizable(true);
+                    jdesktop.add(a1);
+                    dispose();
+                } else {
+
+                    int opc = JOptionPane.showConfirmDialog(null,
+                            "Desea Eliminar el producto " + p.getNombreProducto(), "CONFIRMACIÓN", JOptionPane.YES_NO_OPTION);
+                    if (opc == 0) {
+
+                        try {
+                            p.setEstado("B");
+                            p.setDeletedAt(new Date());
+                            productoJpa.edit(p);
+                            CrearModelo();
+                            cargaInformacionProducto();
+                        } catch (NonexistentEntityException ex) {
+                            Logger.getLogger(AdministrarProductos.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (Exception ex) {
+                            Logger.getLogger(AdministrarProductos.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+
                 }
             }
 
         }
 
-        JOptionPane.showMessageDialog(null, "Hola");
 
     }//GEN-LAST:event_jTableProductosMouseClicked
 
@@ -238,6 +292,7 @@ public class AdministrarProductos extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAñadirProducto;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableProductos;
     // End of variables declaration//GEN-END:variables

@@ -36,6 +36,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Productos.findByIdProducto", query = "SELECT p FROM Productos p WHERE p.idProducto = :idProducto")
     , @NamedQuery(name = "Productos.findByNombreProducto", query = "SELECT p FROM Productos p WHERE p.nombreProducto = :nombreProducto")
     , @NamedQuery(name = "Productos.findByDescripcionProducto", query = "SELECT p FROM Productos p WHERE p.descripcionProducto = :descripcionProducto")
+    , @NamedQuery(name = "Productos.findByEstado", query = "SELECT p FROM Productos p WHERE p.estado = :estado")
     , @NamedQuery(name = "Productos.findByCreatedAt", query = "SELECT p FROM Productos p WHERE p.createdAt = :createdAt")
     , @NamedQuery(name = "Productos.findByUpdatedAt", query = "SELECT p FROM Productos p WHERE p.updatedAt = :updatedAt")
     , @NamedQuery(name = "Productos.findByDeletedAt", query = "SELECT p FROM Productos p WHERE p.deletedAt = :deletedAt")})
@@ -46,11 +47,13 @@ public class Productos implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "idProducto")
-    private Integer idProducto;
+    private Long idProducto;
     @Column(name = "nombreProducto")
     private String nombreProducto;
     @Column(name = "descripcionProducto")
     private String descripcionProducto;
+    @Column(name = "estado")
+    private String estado;
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
@@ -66,15 +69,15 @@ public class Productos implements Serializable {
     public Productos() {
     }
 
-    public Productos(Integer idProducto) {
+    public Productos(Long idProducto) {
         this.idProducto = idProducto;
     }
 
-    public Integer getIdProducto() {
+    public Long getIdProducto() {
         return idProducto;
     }
 
-    public void setIdProducto(Integer idProducto) {
+    public void setIdProducto(Long idProducto) {
         this.idProducto = idProducto;
     }
 
@@ -92,6 +95,14 @@ public class Productos implements Serializable {
 
     public void setDescripcionProducto(String descripcionProducto) {
         this.descripcionProducto = descripcionProducto;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     public Date getCreatedAt() {

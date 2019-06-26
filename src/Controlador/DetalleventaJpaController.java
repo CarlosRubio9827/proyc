@@ -104,7 +104,7 @@ public class DetalleventaJpaController implements Serializable {
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Integer id = detalleventa.getIdDetalleVenta();
+                Long id = detalleventa.getIdDetalleVenta();
                 if (findDetalleventa(id) == null) {
                     throw new NonexistentEntityException("The detalleventa with id " + id + " no longer exists.");
                 }
@@ -117,7 +117,7 @@ public class DetalleventaJpaController implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws NonexistentEntityException {
+    public void destroy(Long id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -172,7 +172,7 @@ public class DetalleventaJpaController implements Serializable {
         }
     }
 
-    public Detalleventa findDetalleventa(Integer id) {
+    public Detalleventa findDetalleventa(Long id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Detalleventa.class, id);

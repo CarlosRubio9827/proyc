@@ -45,7 +45,7 @@ public class Detalleventa implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "idDetalleVenta")
-    private Integer idDetalleVenta;
+    private Long idDetalleVenta;
     @Column(name = "valorUnitario")
     private Integer valorUnitario;
     @Column(name = "cantidad")
@@ -71,15 +71,15 @@ public class Detalleventa implements Serializable {
     public Detalleventa() {
     }
 
-    public Detalleventa(Integer idDetalleVenta) {
+    public Detalleventa(Long idDetalleVenta) {
         this.idDetalleVenta = idDetalleVenta;
     }
 
-    public Integer getIdDetalleVenta() {
+    public Long getIdDetalleVenta() {
         return idDetalleVenta;
     }
 
-    public void setIdDetalleVenta(Integer idDetalleVenta) {
+    public void setIdDetalleVenta(Long idDetalleVenta) {
         this.idDetalleVenta = idDetalleVenta;
     }
 

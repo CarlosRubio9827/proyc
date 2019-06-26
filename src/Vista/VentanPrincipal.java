@@ -44,11 +44,9 @@ public class VentanPrincipal extends javax.swing.JFrame {
                 switch (usuario.getIdRol().getNombreRol()) {
                     case "administrador":
 
-                        JOptionPane.showMessageDialog(null, "Administrador");
-
                         break;
                     case "user":
-                        JOptionPane.showMessageDialog(null, "Usuario");
+
                         break;
                     default:
                         break;
@@ -72,9 +70,11 @@ public class VentanPrincipal extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItemProdcutos = new javax.swing.JMenuItem();
+        jMenuItemVerArticulos = new javax.swing.JMenuItem();
         jMenuProductos = new javax.swing.JMenu();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         jMenuItemVerProductos = new javax.swing.JMenuItem();
+        jMenuItemRegistrarArticulo = new javax.swing.JMenuItem();
         jMenuSalir = new javax.swing.JMenu();
         jMenuItemMpostrararea3 = new javax.swing.JMenuItem();
 
@@ -104,6 +104,14 @@ public class VentanPrincipal extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItemProdcutos);
 
+        jMenuItemVerArticulos.setText("Artículos");
+        jMenuItemVerArticulos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemVerArticulosActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItemVerArticulos);
+
         jMenuBar1.add(jMenu1);
 
         jMenuProductos.setText("Registrar");
@@ -116,6 +124,9 @@ public class VentanPrincipal extends javax.swing.JFrame {
             }
         });
         jMenuProductos.add(jMenuItemVerProductos);
+
+        jMenuItemRegistrarArticulo.setText("Artículos");
+        jMenuProductos.add(jMenuItemRegistrarArticulo);
 
         jMenuBar1.add(jMenuProductos);
 
@@ -150,22 +161,28 @@ public class VentanPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemMpostrararea3ActionPerformed
 
     private void jMenuItemVerProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemVerProductosActionPerformed
+        try {
+            RegistrarProductos r1 = new RegistrarProductos(emf);
+            r1.setVisible(true);
+            r1.setIconifiable(true);
+            r1.setMaximizable(true);
+            r1.setClosable(true);
+            r1.setResizable(true);
+            jDesktopPane1.add(r1);
 
-        RegistrarProductos r1 = new RegistrarProductos(emf);
-        r1.setVisible(true);
-        r1.setIconifiable(true);
-        r1.setMaximizable(true);
-        r1.setClosable(true);
-        r1.setResizable(true);
-        jDesktopPane1.add(r1);
-
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
     }//GEN-LAST:event_jMenuItemVerProductosActionPerformed
 
     private void jMenuItemProdcutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemProdcutosActionPerformed
-        
+
         try {
             AdministrarProductos a1 = new AdministrarProductos(emf, jDesktopPane1);
             a1.setVisible(true);
+            a1.setIconifiable(true);
+            a1.setMaximizable(true);
+            a1.setClosable(true);
             a1.setResizable(true);
             jDesktopPane1.add(a1);
 
@@ -175,6 +192,21 @@ public class VentanPrincipal extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jMenuItemProdcutosActionPerformed
 
+    private void jMenuItemVerArticulosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemVerArticulosActionPerformed
+try {
+            AdministraArticulos a1 = new AdministraArticulos(emf, jDesktopPane1);
+            a1.setVisible(true);
+            a1.setMaximizable(true);
+            a1.setClosable(true);
+            a1.setResizable(true);
+            jDesktopPane1.add(a1);
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }//GEN-LAST:event_jMenuItemVerArticulosActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane jDesktopPane1;
@@ -182,6 +214,8 @@ public class VentanPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItemMpostrararea3;
     private javax.swing.JMenuItem jMenuItemProdcutos;
+    private javax.swing.JMenuItem jMenuItemRegistrarArticulo;
+    private javax.swing.JMenuItem jMenuItemVerArticulos;
     private javax.swing.JMenuItem jMenuItemVerProductos;
     private javax.swing.JMenu jMenuProductos;
     private javax.swing.JMenu jMenuSalir;

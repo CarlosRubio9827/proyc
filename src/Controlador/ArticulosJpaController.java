@@ -181,7 +181,7 @@ public class ArticulosJpaController implements Serializable {
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Integer id = articulos.getIdArticulo();
+                Long id = articulos.getIdArticulo();
                 if (findArticulos(id) == null) {
                     throw new NonexistentEntityException("The articulos with id " + id + " no longer exists.");
                 }
@@ -194,7 +194,7 @@ public class ArticulosJpaController implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException {
+    public void destroy(Long id) throws IllegalOrphanException, NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -252,7 +252,7 @@ public class ArticulosJpaController implements Serializable {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(Articulos.class));
             Query q = em.createQuery(cq);
-            if (!all) {
+            if (!all) { 
                 q.setMaxResults(maxResults);
                 q.setFirstResult(firstResult);
             }
@@ -262,7 +262,7 @@ public class ArticulosJpaController implements Serializable {
         }
     }
 
-    public Articulos findArticulos(Integer id) {
+    public Articulos findArticulos(Long id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Articulos.class, id);
