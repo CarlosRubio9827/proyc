@@ -7,6 +7,7 @@ package Vista;
 
 import Controlador.ProductosJpaController;
 import Modelo.Productos;
+import Modelo.Render;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.swing.JButton;
@@ -29,9 +30,7 @@ public class AdministrarProductos extends javax.swing.JInternalFrame {
         this.emf = emf;
         this.jdesktop = jdp;
         productoJpa = new ProductosJpaController(emf);
-        
-        javax.swing.JButton jButtonEditarProductos;
-        
+
         initComponents();
         CrearModelo();
         cargaInformacionProducto();
@@ -41,19 +40,21 @@ public class AdministrarProductos extends javax.swing.JInternalFrame {
 
     private void CrearModelo() {
         try {
+
             modelo = (new DefaultTableModel(
                     null, new String[]{
-                        "Id", "Nombre", "Decripcion","Opciones"
+                        "Id", "Nombre", "Decripcion", "Opciones", "Opciones"
                     }) {
                 Class[] types = new Class[]{
                     java.lang.String.class,
                     java.lang.String.class,
                     java.lang.String.class,
-                    java.lang.String.class
+                    javax.swing.JButton.class,
+                    javax.swing.JButton.class
 
                 };
                 boolean[] canEdit = new boolean[]{
-                    false, false, false, false
+                    false, false, false, false, false
                 };
 
                 @Override
@@ -76,13 +77,17 @@ public class AdministrarProductos extends javax.swing.JInternalFrame {
         try {
             Object o[] = null;
             List<Productos> listaProductos = productoJpa.findProductosEntities();
+            jTableProductos.setDefaultRenderer(Object.class, new Render());
+            jTableProductos.setRowHeight(30);
+            jButtonEditar.setName("editar");
+            jbuttonEliminar.setName("eliminar");
             for (int i = 0; i < listaProductos.size(); i++) {
                 modelo.addRow(o);
                 modelo.setValueAt(listaProductos.get(i).getIdProducto(), i, 0);
                 modelo.setValueAt(listaProductos.get(i).getNombreProducto(), i, 1);
                 modelo.setValueAt(listaProductos.get(i).getDescripcionProducto(), i, 2);
-                modelo.setValueAt(, i, 3);
-
+                modelo.setValueAt(jButtonEditar, i, 3);
+                modelo.setValueAt(jbuttonEliminar, i, 4);
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
@@ -106,7 +111,7 @@ public class AdministrarProductos extends javax.swing.JInternalFrame {
         jTableProductos = new javax.swing.JTable();
         jButtonAñadirProducto = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jTableProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -116,6 +121,11 @@ public class AdministrarProductos extends javax.swing.JInternalFrame {
 
             }
         ));
+        jTableProductos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableProductosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTableProductos);
 
         jButtonAñadirProducto.setText("Añadir Producto");
@@ -151,6 +161,7 @@ public class AdministrarProductos extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+
     private void jButtonAñadirProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAñadirProductoActionPerformed
 
         RegistrarProductos a1 = new RegistrarProductos(emf);
@@ -163,6 +174,29 @@ public class AdministrarProductos extends javax.swing.JInternalFrame {
         jdesktop.add(a1);
         dispose();
     }//GEN-LAST:event_jButtonAñadirProductoActionPerformed
+
+    private void jTableProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableProductosMouseClicked
+
+        int column = jTableProductos.getColumnModel().getColumnIndexAtX(evt.getX());
+        int row = evt.getY() / jTableProductos.getRowHeight();
+
+        if (row < jTableProductos.getRowCount() && row >= 0 && column < jTableProductos.getColumnCount() && column >= 0) {
+            Object value = jTableProductos.getValueAt(row, column);
+            if (value instanceof JButton) {
+                ((JButton) value).doClick();
+                JButton boton = (JButton) value;
+                if (boton.getName().equalsIgnoreCase("editar")) {
+                    JOptionPane.showMessageDialog(null, "Editar");
+                }else{
+                    JOptionPane.showMessageDialog(null, "Eliminar");
+                }
+            }
+
+        }
+
+        JOptionPane.showMessageDialog(null, "Hola");
+
+    }//GEN-LAST:event_jTableProductosMouseClicked
 
     /**
      * @param args the command line arguments
@@ -198,6 +232,9 @@ public class AdministrarProductos extends javax.swing.JInternalFrame {
             }
         });
     }
+    JButton jButtonEditar = new JButton("Editar");
+
+    JButton jbuttonEliminar = new JButton("Eliminar");
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAñadirProducto;
